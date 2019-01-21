@@ -1,15 +1,44 @@
-//
-//  main.cpp
-//  HelloThreads
-//
-//  Created by Santiago Vasco Tabares on 1/19/19.
-//  Copyright © 2019 Santiago Vasco Tabares. All rights reserved.
-//
-
 #include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> bubbleSort(vector<int>);
 
 int main(int argc, const char * argv[]) {
+    int listSize = 0, poolSize = 0;
     
-    std::cout << "Hello Thread!" << std::endl;
+    cout << "Enter the number of lists: ";
+    cin >> poolSize;
+    cout << "Enter the size of the lists: ";
+    cin >> listSize;
+    
+    vector<vector<int>> pool(poolSize);
+    
+    cout << "Creating " << poolSize << " of " << listSize << " numbers in decrement..." << endl;
+    for (int i = 0; i < poolSize; i++) {
+        vector<int> temp;
+        for(int j = listSize; j > 0; j--){
+            temp.push_back(j);
+        }
+        pool.push_back(temp);
+    }
+    
+    cout << "Successfully created lists." << endl;
+    
     return 0;
+}
+
+vector<int> bubbleSort(vector<int> numbers){
+    int temp;
+    for(int i = 0; i < numbers.size(); i++){
+        for(int j = 0; j < numbers.size(); j++){
+            if(numbers[j] > numbers[j+1]){
+                temp = numbers[j];
+                numbers[j] = numbers[j+1];
+                numbers[j+1] = temp;
+            }
+        }
+    }
+    return numbers;
 }
