@@ -1,14 +1,17 @@
 #include <iostream>
 #include <vector>
 #include <time.h>
+#include <thread>
 
 using namespace std;
 
 vector<int> bubbleSort(vector<int>);
+void asynchronousSort(vector<vector<int>>);
+void synchronousSort(vector<vector<int>>);
 
 int main(int argc, const char * argv[]) {
     int listSize = 0, poolSize = 0;
-    double executionTime;
+    int selectMethod;
     
     cout << "Enter the number of lists: ";
     cin >> poolSize;
@@ -27,7 +30,37 @@ int main(int argc, const char * argv[]) {
     }
     
     cout << "Successfully created lists." << endl;
+    cout << "How do you want to sort the lists? 1)Asynchronously. 2)Synchronously. (1/2): ";
+    cin >> selectMethod;
     
+    if(selectMethod == 1){
+        asynchronousSort(pool);
+    }else{
+        synchronousSort(pool);
+    }
+    
+    
+    
+    return 0;
+}
+
+void asynchronousSort(vector<vector<int>> pool){
+    double executionTime;
+    cout << "Sorting..." << endl;
+    
+    clock_t tStart = clock();
+    for(int i = 0; i < pool.size(); i++){
+        thread t (bubbleSort, pool[i]);
+        t.join();
+    }
+   
+    executionTime = (double)(clock() - tStart)/CLOCKS_PER_SEC;
+    cout << "Time :" << executionTime<< "s." << endl ;
+}
+
+void synchronousSort(vector<vector<int>> pool){
+    double executionTime;
+    cout << "Sorting..." << endl;
     clock_t tStart = clock();
     
     for(int i = 0; i < pool.size(); i++){
@@ -35,11 +68,9 @@ int main(int argc, const char * argv[]) {
     }
     
     executionTime = (double)(clock() - tStart)/CLOCKS_PER_SEC;
-    
-    cout << "Time sorting the lists :" << executionTime << endl << "s.";
-    
-    return 0;
+    cout << "Time :" << executionTime<< "s." << endl ;
 }
+
 
 vector<int> bubbleSort(vector<int> numbers){
     int temp;
