@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <time.h>
 
 using namespace std;
 
@@ -7,6 +8,7 @@ vector<int> bubbleSort(vector<int>);
 
 int main(int argc, const char * argv[]) {
     int listSize = 0, poolSize = 0;
+    double executionTime;
     
     cout << "Enter the number of lists: ";
     cin >> poolSize;
@@ -25,6 +27,16 @@ int main(int argc, const char * argv[]) {
     }
     
     cout << "Successfully created lists." << endl;
+    
+    clock_t tStart = clock();
+    
+    for(int i = 0; i < pool.size(); i++){
+        pool[i] = bubbleSort(pool[i]);
+    }
+    
+    executionTime = (double)(clock() - tStart)/CLOCKS_PER_SEC;
+    
+    cout << "Time sorting the lists :" << executionTime << endl << "s.";
     
     return 0;
 }
